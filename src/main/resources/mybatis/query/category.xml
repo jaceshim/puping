@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace는 반드시 data-context.xml의 commonDao Bean설정시 주어진 defaultNamespace를 prefix로 해야함. -->
+<mapper namespace="randy.sql.category">
+	<cache  eviction="LRU" 
+			flushInterval="60000"/>
+
+	<sql id="selectCategorySql">
+			cate_seq   AS cateSeq
+		,	cate_name AS cateName
+		,	pcate_seq  AS pcateSeq
+		,	use_yn    AS useYn
+	</sql>
+	
+	<select id="getCategoryTreeList" parameterType="category" resultType="category">
+		SELECT  hi.cate_seq AS cateSeq
+			,	cate_name  AS cateName
+			,	pcate_seq   AS pcateSeq
+			,	use_yn     AS useYn 
+			,	level
+		FROM    (
+		        SELECT  category_connect_by(cate_seq) AS cate_seq, @level AS level
+		        FROM    (
+		                SELECT  @start_with := 0,
+		                        @id := @start_with,
+		                        @level := 0
+		                ) vars, tb_category
+		        WHERE   @id IS NOT NULL
+		        ) ho
+		JOIN    tb_category hi
+		ON      hi.cate_seq = ho.cate_seq
+	</select>
+	
+	<select id="getCategoryList" parameterType="category" resultType="category">
+		select <include refid="selectCategorySql"/>
+		from tb_category
+		<where>
+			<if test='pcateSeq != null'>
+				pcate_seq = #{pcateSeq}
+			</if>
+		</where>
+	</select>
+	
+	<insert id="insertCategory" parameterType="category" flushCache="true" useGeneratedKeys="true" keyProperty="cateSeq">	
+		insert into tb_category (
+				cate_name
+			,	pcate_seq
+			,	use_yn
+		) values (
+				#{cateName}
+			,	#{pcateSeq}
+			,	'Y'
+		)		
+	</insert>
+	
+	<sql id="selectCategoryTagSql">
+			P.cate_seq as cateSeq
+		,	P.cate_name as cateName
+		,	P.pcate_seq as pcateSeq
+		,	P.use_yn as useYn
+		,	C.tag as tag
+		,	C.seq as seq
+	</sql>
+	
+	<select id="getCategoryTagList" parameterType="categoryTag" resultType="categoryTag">
+		select <include refid="selectCategoryTagSql"/>
+		from tb_category P 
+		right join tb_category_tag C
+		on P.cate_seq = C.cate_seq
+		<where>
+			<if test='pcateSeq != null'>
+				P.cate_seq = #{pcateSeq}
+			</if>
+			<if test='tag != null'>
+				and C.tag like concat('%', #{tag}, '%')
+			</if>
+		</where>
+	</select>
+	
+	<select id="getCategoryTagPageList" resultType="categoryTag" parameterType="categoryTag" >
+		select <include refid="selectCategoryTagSql"/>
+		from tb_category P
+		right join tb_category_tag C
+		on P.cate_seq = C.cate_seq
+		<where>
+			<if test='cateSeq != null'>P.cate_seq = #{cateSeq}</if>
+			<if test='tag != null'>and C.tag like concat('%', #{tag}, '%')</if>
+		</where>
+		order by C.seq desc 
+		limit #{startRow}, #{pageSize}
+	</select>
+	
+	<select id="getCategoryTagPageListCount" resultType="java.lang.Integer" parameterType="categoryTagUnreg" >
+		select count(*)
+		from tb_category_tag
+		<where>
+			<if test='cateSeq != null'>cate_seq = #{cateSeq}</if>
+			<if test='tag != null'>and tag like concat('%', #{tag}, '%')</if>
+		</where>		
+	</select>
+	
+	<select id="getUniqueCategoryTagList" parameterType="categoryTag" resultType="categoryTag" useCache="false">
+		select distinct(cateSeq) AS cateSeq
+		from (
+			select <include refid="selectCategoryTagSql"/>
+			from tb_category P 
+			left join tb_category_tag C
+			on C.cate_seq = P.cate_seq
+			<where>
+				<if test='pcateSeq != null'>
+					P.cate_seq = #{pcateSeq}
+				</if>
+				<if test='tag != null'>
+					and C.tag like concat('%', #{tag}, '%')
+				</if>
+			</where>		
+		) OUT_TB
+	</select>
+	
+	<insert id="insertCategoryTag" parameterType="categoryTag" flushCache="true" useGeneratedKeys="true" keyProperty="seq">		
+		insert into tb_category_tag (
+				cate_seq
+			,	tag
+		) values (
+				#{cateSeq}
+			,	#{tag}
+		)
+	</insert>
+	
+	<sql id="selectCategoryTagUnregSql">
+			seq
+		,	prd_seq  AS prdSeq
+		,	mall_id  AS mallId
+		,	prd_name AS prdName
+		,	prd_thumb_url AS prdThumbUrl
+		,	prd_url       AS prdUrl
+		,	tag
+		,	proc_yn  AS procYn
+		,	DATE_FORMAT(reg_dt, '%Y-%m-%d %H:%i:%s') AS regDt
+	</sql>
+	
+	<resultMap id="categoryTagUnregResult" type="categoryTagUnreg">
+		<result column="seq" property="seq"/>
+		<result column="prdSeq" property="prdSeq"/>
+		<result column="mallId" property="mallId"/>
+		<result column="prdName" property="prdName"/>
+		<result column="prdThumbUrl" property="prdThumbUrl"/>
+		<result column="prdUrl" property="prdUrl"/>
+		<result column="tag" property="tag"/>
+		<result column="procYn" property="procYn"/>
+		<result column="regDt" property="regDt"/>
+		<association property="mall" column="{mallId=mallId}" select="randy.sql.mall.getMall" />
+	</resultMap>
+	
+	<select id="getCategoryTagUnreg" resultMap="categoryTagUnregResult" parameterType="categoryTagUnreg">
+		select <include refid="selectCategoryTagUnregSql"/>
+		from tb_category_tag_unreg
+		where seq = #{seq}
+	</select>
+	
+	<select id="getCategoryTagUnregList" resultMap="categoryTagUnregResult" parameterType="categoryTagUnreg">
+		select <include refid="selectCategoryTagUnregSql"/>
+		from tb_category_tag_unreg
+	</select>
+	
+	<select id="getCategoryTagUnregPageList" resultMap="categoryTagUnregResult" parameterType="categoryTagUnreg" >
+		select <include refid="selectCategoryTagUnregSql"/>
+		from tb_category_tag_unreg
+		<where>
+			proc_yn = 'N'
+			<if test='mallId'>and mall_id=#{mallId}</if>
+		</where>
+		order by seq desc 
+		limit #{startRow}, #{pageSize}
+	</select>
+	
+	<select id="getCategoryTagUnregPageListCount" resultType="java.lang.Integer" parameterType="categoryTagUnreg" >
+		select count(*)
+		from tb_category_tag_unreg
+		<where>
+			proc_yn = 'N'
+			<if test='mallId'>and mall_id=#{mallId}</if>
+		</where>		
+	</select>	
+	
+	<insert id="insertCategoryTagUnreg" parameterType="categoryTagUnreg" flushCache="true" useGeneratedKeys="true" keyProperty="seq">
+		insert into tb_category_tag_unreg (
+				prd_seq
+			,	mall_id
+			,	prd_name
+			,	prd_thumb_url
+			,	prd_url
+			,	tag
+			,	proc_yn
+			,	reg_dt
+		) values (
+				#{prdSeq}
+			,	#{mallId}
+			,	#{prdName}
+			,	#{prdThumbUrl}
+			,	#{prdUrl}
+			,	#{tag}
+			,	'N'
+			,	now() 
+		)
+	</insert>
+	
+	<update id="updateCategoryTagUnreg" parameterType="categoryTagUnreg">
+		update tb_category_tag_unreg
+		<set>
+			<if test='procYn != null'>proc_yn = #{procYn},</if>
+		</set>
+		where seq = #{seq}
+	</update>	
+	
+</mapper>

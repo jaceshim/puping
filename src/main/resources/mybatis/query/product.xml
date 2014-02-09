@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace는 반드시 data-context.xml의 commonDao Bean설정시 주어진 defaultNamespace를 prefix로 해야함. -->
+<mapper namespace="randy.sql.product">
+
+	<sql id="selectProductSql">
+			prd_seq       AS prdSeq
+		,	prd_type      AS prdType
+		,	cate_seq      AS cateSeq
+		,	mall_id       AS mallId
+		,	prd_name      AS prdName
+		,	prd_org_id    AS prdOrgId
+		,	prd_org_price AS prdOrgPrice
+		,	prd_price     AS prdPrice
+		,	prd_url       AS prdUrl
+		,	prd_thumb_url AS prdThumbUrl
+		,	reg_yn        AS regYn
+		,	DATE_FORMAT(reg_dt, '%Y-%m-%d %H:%i:%s') AS regDt
+	</sql>
+	
+	<select id="getProductList" parameterType="product" resultType="product">
+		select <include refid="selectProductSql"/>
+		from tb_product
+		<where>
+			<if test='mallId != null'>
+				mall_id = #{mallId}
+			</if>
+			<if test='cateSeq != null'>
+				AND cate_seq = #{cateSeq}
+			</if>			
+		</where>
+	</select>
+	
+	<select id="getProductPageList" parameterType="product" resultType="product">
+		select <include refid="selectProductSql"/>
+		from tb_product
+		<where>
+			<if test='regYn != null'>reg_yn = #{regYn}</if>
+			<if test='mallId != null'>and mall_id = #{mallId}</if>
+			<if test='prdName != null'>and prd_name like concat('%', #{prdName}, '%')</if>
+		</where>
+		order by prd_seq desc 
+		limit #{startRow}, #{pageSize}
+	</select>
+	
+	<select id="getProductPageListCount" parameterType="product" resultType="java.lang.Integer">
+		select count(*)
+		from tb_product
+		<where>
+			<if test='regYn != null'>reg_yn = #{regYn}</if>
+			<if test='mallId != null'>and mall_id = #{mallId}</if>
+			<if test='prdName != null'>and prd_name like concat('%', #{prdName}, '%')</if>
+		</where>		
+	</select>
+	
+	<insert id="insertProduct" parameterType="product" flushCache="true" useGeneratedKeys="true" keyProperty="prdSeq">	
+		insert into tb_product (
+				prd_type
+			,	cate_seq
+			,	mall_id
+			,	prd_name
+			,	prd_org_id
+			,	prd_url
+			,	prd_price
+			,	prd_thumb_url
+			,	reg_yn
+		) values (
+				#{prdType}
+			,	#{cateSeq}
+			,	#{mallId}
+			,	#{prdName}
+			,	#{prdOrgId}
+			,	#{prdUrl}
+			,	#{prdPrice}
+			,	#{prdThumbUrl}
+			,	#{regYn}
+		)		
+	</insert>
+	
+	<update id="updateProduct" parameterType="product" flushCache="true">
+		update tb_product set
+		<if test='cateSeq != null nad !cateSeq.equals("")'>cate_seq = #{cateSeq}</if>
+		<if test='regYn != null nad !regYn.equals("")'>reg_yn = #{regYn}</if>
+		where prd_seq = #{prdSeq}
+	</update>
+	
+	<delete id="deleteProduct" parameterType="product" flushCache="true">
+		delete from tb_product
+		<where>
+			<if test='mallId != null'>
+				mall_id = #{mallId}
+			</if>
+			<if test='prdType != null'>
+				and prd_type = #{prdType}
+			</if>			
+		</where>
+	</delete>
+	
+</mapper>

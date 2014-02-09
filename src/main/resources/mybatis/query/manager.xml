@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="randy.sql.manager">
+
+	<sql id="selectManagerSql">
+			mgr_id     as mgrId
+		,	mgr_name   as mgrName
+		,	use_yn     as useYn
+		,	DATE_FORMAT(reg_dt, '%Y-%m-%d %H:%i:%s') as regDt
+		,	DATE_FORMAT(login_dt, '%Y-%m-%d %H:%i:%s') as loginDt
+	</sql>
+	
+	<select id="getManager" parameterType="manager" resultType="manager" >
+		select <include refid="selectManagerSql"/>
+		from tb_manager
+		where mgr_id = #{mgrId}
+		<if test='password != null and !password.equals("")'>and password = #{password}</if>
+		<if test='useYn != null and !useYn.equals("")'>and use_yn = #{useYn}</if>
+	</select>	
+	
+	<select id="getManagerList" parameterType="manager" resultType="manager" >
+		select <include refid="selectManagerSql"/>
+		from tb_manager	
+	</select>
+	
+	<select id="getManagerPageList" parameterType="manager" resultType="manager" >
+		select <include refid="selectManagerSql"/>
+		from tb_manager
+		<where>
+			<if test='mgrName != null and !mgrName.equals("")'>mgr_name = #{mgrName}</if>
+		</where>
+		order by reg_dt desc 
+		limit #{startRow}, #{pageSize}
+	</select>
+	
+	<select id="getManagerPageListCount" parameterType="manager" resultType="java.lang.Integer" >
+		select count(*)
+		from tb_manager
+		<where>
+			<if test='mgrName != null and !mgrName.equals("")'>mgr_name = #{mgrName}</if>
+		</where>
+	</select>		
+	
+	<insert id="insertManager" parameterType="manager">
+		insert into tb_manager (
+				mgr_id
+			,	mgr_name
+			,	password
+			,	use_yn
+			,	reg_dt
+		) values (
+				#{mgrId}
+			,	#{mgrName}
+			,	#{password}
+			,	#{useYn}
+			,	now()
+		)		
+	</insert>
+	
+	<update id="updateManager" parameterType="manager">
+		update tb_manager set
+			<if test='mgrName != null and !mgrName.equals("")'>mgr_name = #{mgrName}</if>
+			<if test='useYn != null and !useYn.equals("")'>,use_yn = #{useYn}</if>
+			<if test='password != null and !password.equals("")'>,password = #{password}</if>
+		where mgr_id = #{mgrId}
+	</update>
+	
+	<update id="updateLoginDt" parameterType="manager">
+		update tb_manager set
+			login_dt = now()
+		where mgr_id = #{mgrId}
+	</update>	
+
+</mapper>

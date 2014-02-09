@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx" 
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+	
+	<tx:annotation-driven proxy-target-class="true"/>
+
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="#{config['db.driver']}"/>
+		<property name="url" value="#{config['db.url']}"/>
+		<property name="username" value="#{config['db.username']}"/>
+		<property name="password" value="#{config['db.password']}"/>
+		<property name="initialSize" value="#{config['db.initialSize']}" />
+		<property name="maxActive" value="#{config['db.maxActive']}" />
+		<property name="minIdle" value="#{config['db.minIdle']}" />
+		<property name="maxIdle" value="#{config['db.maxIdle']}" />
+		<property name="maxWait" value="#{config['db.maxWait']}" />
+		<property name="poolPreparedStatements" value="true" />
+		<property name="maxOpenPreparedStatements" value="100" />
+		<property name="removeAbandoned" value="true"/>
+		<property name="removeAbandonedTimeout" value="60"/>
+		
+		<!-- Avoid idle database timeouts (for low-usage apps) -->
+		<property name="validationQuery" value="SELECT 1" />
+		<property name="testOnBorrow" value="true" />
+		<property name="testWhileIdle" value="true"/>
+		<property name="timeBetweenEvictionRunsMillis" value="3600000"/>
+	</bean>
+	
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:mybatis/mybatis-config.xml"/>
+		<property name="typeAliasesPackage" value="randy.web.domain" />
+		<property name="mapperLocations" value="classpath:mybatis/query/**/*.xml" />
+	</bean>
+	
+	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg ref="sqlSessionFactory" />
+	</bean>
+	
+	<bean name="commonDao" class="randy.core.j2ee.dao.CommonDao">
+		<property name="defaultNamespace" value="randy.sql" />
+	</bean>
+	
+	<!-- 
+	<bean id="redisConfig" class="randy.web.support.dao.GenericObjectPoolConfigWrapper">
+		<property name="whenExhaustedAction">
+			<util:constant static-field="org.apache.commons.pool.impl.GenericObjectPool.WHEN_EXHAUSTED_FAIL" />
+		</property>
+		<property name="maxActive" value="${redis.maxActive}" />
+		<property name="maxIdle" value="${redis.maxIdle}" />
+		<property name="minIdle" value="${redis.minIdle}" />
+		<property name="testOnBorrow" value="${redis.testOnBorrow}" />
+		<property name="testOnReturn" value="${redis.testOnReturn}" />
+		<property name="testWhileIdle" value="${redis.testWhileIdle}" />
+		<property name="numTestsPerEvictionRun" value="${redis.numTestsPerEvictionRun}" />
+		<property name="timeBetweenEvictionRunsMillis" value="${redis.timeBetweenEvictionRunsMillis}" />
+		<property name="maxWait" value="${redis.maxWait}" />
+	</bean>
+	
+	<bean id="redisPool" class="redis.clients.jedis.JedisPool" destroy-method="destroy">
+		<constructor-arg index="0">
+			<bean factory-bean="redisConfig" factory-method="getConfig" />
+		</constructor-arg>
+		<constructor-arg index="1" value="${redis.host}" />
+		<constructor-arg index="2" value="${redis.timeout}" />
+		<constructor-arg index="3" value="${redis.password}" />
+	</bean>
+	 -->
+	
+	<!--
+	<jdbc:initialize-database data-source="dataSource" enabled="true">
+	    <jdbc:script location="classpath:sqlmap/init.sql"/> 
+	</jdbc:initialize-database>
+	-->	
+		
+	
+</beans>

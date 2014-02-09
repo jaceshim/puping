@@ -1,0 +1,54 @@
+#if ($alertType == "alert_and_post" || $alertType == "confirm_and_post")
+	#set ($methodType = "post")
+#else
+	#set ($methodType = "get")
+#end
+
+
+<script type="text/javascript">
+	window.onload = function() {
+		goPage();
+	}
+	
+	function goPage() {
+		var form = document.alertForm;
+		#if ($alertType == "go_page")
+			form.method = '$!{methodType}';
+			form.action = '$!{redirectUrl}';
+		#elseif ($alertType == "alert_and_back")
+			alert('$!{message}');
+			history.back(-1);		
+		#elseif ($alertType == "alert_and_close")
+			alert('$!{message}');
+			form.target = opener.name;
+			form.method = '$!{methodType}';
+			form.action = '$!{redirectUrl}';
+			self.close();		
+		#elseif ($alertType == "alert_and_go" || $alertType == "alert_and_post")
+			alert('$!{message}');	
+			form.method = '$!{methodType}';
+			form.action = '$!{redirectUrl}';		
+		#elseif ($alertType == "confirm_and_go" || $alertType == "confirm_and_post")
+			form.method = '$!{methodType}';
+			var answer = confirm('!${message}');
+			if (answer) {
+				#if ($redirectUrl != "")
+					form.action = '$!{redirectUrl}';
+				#end
+			} else {
+				#if ($cancelUrl != "")
+					form.action = '${cancelUrl}';	
+				#end
+			}		
+		#end
+	}
+	
+</script>
+
+<form id="alertForm" name="alertForm" onsubmit="return false;">
+	#if (! $params)
+		#foreach ($key in $params.keySet())
+			<input type="hidden" name="$!{key}" value="${params.get($key)}" />
+		#end
+	#end
+</form>

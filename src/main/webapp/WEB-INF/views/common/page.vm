@@ -1,0 +1,55 @@
+<script type="text/javascript">
+	function jsMovePage(pageNum) {
+	    var form = document.$!{page.formName};
+	    if (form.pageNum === undefined) {
+	    	var newPageNumEl = document.createElement('input');
+	    	newPageNumEl.name='pageNum';
+	    	newPageNumEl.type = 'hidden';
+	    	
+	    	form.appendChild(newPageNumEl);
+	    }
+	    
+	    form.pageNum.value = pageNum;
+	    form.action = document.location.pathname;
+	    form.submit();		
+	}
+</script>
+<div class="pagination pagination-centered">
+	<ul>
+
+		#* TODO: 로직검토
+		#if ($page.hasPrevPageUnit)
+		<li><a href="#" onclick="jsMovePage($!{page.pageOfPrevPageUnit}); return false;">맨처음</a></li>
+		#end
+		*#
+		
+		#if ($page.hasPrevPage)
+		<li><a href="#" onclick="jsMovePage($!{page.prevPage}); return false;">Prev</a></li>
+		#end
+		
+		#set ($pageIdx = $page.beginUnitPage)
+		<#assign pageIdx = page.beginUnitPage>
+		#foreach ($num in [$pageIdx..$page.endItemsPage])
+			#set ($isActive = ($num == $page.currentPage))
+			
+			#if ($isActive)
+				<li class="active">
+					<a href="#">${num}</a>
+				</li>			
+			#else
+				<li>
+					<a href="#" onclick="jsMovePage(${num}); return false;">${num}</a>
+				</li>			
+			#end
+		#end
+		
+		#if ($page.hasNextPage)
+		<li><a href="#"  onclick="jsMovePage(${page.nextPage}); return false;">Next</a></li>
+		#end
+		
+		#*
+		#if (page.hasNextPageUnit)
+		<li><a href="#" onclick="jsMovePage(${page.pageOfNextPageUnit}); return false;">맨마지막</a></li>
+		*#
+	</ul>
+</div>

@@ -1,0 +1,12 @@
+<tools>
+	<toolbox scope="application">
+		<tool key="alterTool" class="org.apache.velocity.tools.generic.AlternatorTool"/>
+		<tool key="convertTool" class="org.apache.velocity.tools.generic.ConversionTool" dateFormat="yyyy-MM-dd" />
+		<tool key="displayTool" class="org.apache.velocity.tools.generic.DisplayTool"/>
+		<tool key="mathTool" class="org.apache.velocity.tools.generic.MathTool"/>
+		<tool key="numberTool" class="org.apache.velocity.tools.generic.NumberTool"/>
+		<tool key="listTool" class="org.apache.velocity.tools.generic.ListTool"/>
+		<tool key="escTool" class="org.apache.velocity.tools.generic.EscapeTool"/>
+	</toolbox>
+
+</tools>

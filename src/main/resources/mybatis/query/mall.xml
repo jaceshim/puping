@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace는 반드시 data-context.xml의 commonDao Bean설정시 주어진 defaultNamespace를 prefix로 해야함. -->
+<mapper namespace="randy.sql.mall">
+
+
+	<sql id="selectMallSql">
+			mall_id           AS mallId
+		,	mall_name         AS mallName
+		,	mall_url          AS mallUrl
+		,	task_interval     AS taskInterval
+		,	use_yn            AS useYn
+	</sql>
+	
+	<select id="getMallList" parameterType="mall" resultType="mall">
+		select <include refid="selectMallSql"/>
+		from tb_mall
+	</select>
+	
+	<select id="getMall" parameterType="mall" resultType="mall">
+		select <include refid="selectMallSql"/>
+		from tb_mall
+		where mall_id = #{mallId}
+	</select>	
+	
+	<insert id="insertMall" parameterType="mall" useGeneratedKeys="true" keyProperty="mallId">
+		insert into tb_mall (
+				mall_name
+			,	mall_url
+			,	task_interval
+			,	use_yn
+		) values (
+				#{mallName}
+			,	#{mallUrl}
+			,	#{taskInterval}
+			,	'Y'  
+		)		
+	</insert>
+	
+	<update id="updateMall" parameterType="mall">
+		update tb_mall
+			<set>
+				<if test='mallName != null'>mall_name = #{mallName},</if>
+				<if test='mallUrl != null'>mall_url = #{mallUrl},</if>
+				<if test='taskInterval != null'>task_interval = #{taskInterval},</if>
+				<if test='useYn != null'>use_yn = #{useYn}</if>
+			</set>
+		where mall_id = #{mallId}
+	</update>
+	
+	
+</mapper>

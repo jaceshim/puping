@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<decorators defaultdir="/WEB-INF/views/layout">
+    <!-- Any urls that are excluded will never be decorated by Sitemesh -->
+    <excludes>
+        <pattern>/index.jsp</pattern>
+        <pattern>/test/*</pattern>
+        <pattern>error_500.jsp</pattern>
+        <pattern>error_404.jsp</pattern>
+        <pattern>*.ajax*</pattern>
+        <pattern>*.xml*</pattern>
+        <pattern>*.json*</pattern>
+        <pattern>*.excel*</pattern>
+    </excludes>
+    
+    <decorator name="rearDefaultLayout" page="rear/rearLayout.jsp">
+        <pattern>/rear/*</pattern>
+    </decorator>   
+    
+    <!-- 
+    <decorator name="ajaxLayout" page="rear/ajaxLayout.jsp">
+        <pattern>/rear/*</pattern>
+    </decorator>
+     -->    
+    
+    <decorator name="defaultLayout" page="rear/noLayout.jsp">
+    	<pattern>/rear/manager/loginform*</pattern>
+        <pattern>/*</pattern>
+    </decorator>    
+
+</decorators>

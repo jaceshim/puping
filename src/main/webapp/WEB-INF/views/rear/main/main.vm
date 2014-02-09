@@ -1,0 +1,15 @@
+<head>
+	<script type="text/javascript">
+		$( document ).ready(function() {
+			//alert('script on ready!!!');
+		});
+	</script>
+</head>
+
+<body>
+	main page
+	
+	#foreach($item in [1..100])
+	<p>&nbsp;</p>
+	#end
+</body>
