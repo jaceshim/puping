@@ -1,5 +1,7 @@
 package randy.web.controller.rear;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +34,7 @@ public class CategoryController extends AbstractRearController {
 
 	@Autowired
 	private CategoryService categoryService;
-	
+
 	@Autowired
 	private MallService mallService;
 
@@ -43,12 +45,24 @@ public class CategoryController extends AbstractRearController {
 	 * @return
 	 */
 	@RequestMapping(PATH + "list")
-	public String getCategoryList(Model model) {
+	public String getCategoryList(@ModelAttribute Category category, Model model) {
 
-		// 카테고리 tree목록 호출.
-		model.addAttribute("categoryList", categoryService.getCategoryTreeList(null));
+		// nothing...
 
 		return VIEW_PREFIX + PATH + "getCategoryList";
+	}
+
+	/**
+	 * 카테고리 목록 for tree
+	 * 
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(PATH + "tree")
+	@ResponseBody
+	public List<Category> getCategoryListForTree(@ModelAttribute Category category, Model model) {
+
+		return categoryService.getCategoryList(category);
 	}
 
 	/**
@@ -109,10 +123,10 @@ public class CategoryController extends AbstractRearController {
 	 */
 	@RequestMapping(PATH + "tag/list")
 	public String getCategoryTagList(@ModelAttribute CategoryTag categoryTag, Model model) {
-		
+
 		// 카테고리 목록
-		model.addAttribute("categoryList", categoryService.getCategoryList(null));		
-		
+		model.addAttribute("categoryList", categoryService.getCategoryList(null));
+
 		model.addAttribute("page", categoryService.getCategoryTagPageList(categoryTag));
 
 		return VIEW_PREFIX + PATH + "getCategoryTagList";
