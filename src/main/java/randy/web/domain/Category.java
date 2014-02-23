@@ -14,6 +14,8 @@ public class Category extends AbstractPageDomain {
 	/** 카테고리 태그 목록 */
 	private List<CategoryTag> cateTagList;
 
+	private List<Category> childrenList;
+
 	/** 카테고리 순번 */
 	private Integer cateSeq;
 	/** 부모 카테고리 순번 */
@@ -22,15 +24,21 @@ public class Category extends AbstractPageDomain {
 	private String cateName;
 	/** 사용여부 */
 	private String useYn;
-	/** tree구조 표현시 레벨 */
-	private int level;
-
+	
 	public List<CategoryTag> getCateTagList() {
 		return cateTagList;
 	}
 
 	public void setCateTagList(List<CategoryTag> cateTagList) {
 		this.cateTagList = cateTagList;
+	}
+
+	public List<Category> getChildrenList() {
+		return childrenList;
+	}
+
+	public void setChildrenList(List<Category> childrenList) {
+		this.childrenList = childrenList;
 	}
 
 	public Integer getCateSeq() {
@@ -45,7 +53,7 @@ public class Category extends AbstractPageDomain {
 		return pcateSeq;
 	}
 
-	public void setPcateId(Integer pcateSeq) {
+	public void setPcateSeq(Integer pcateSeq) {
 		this.pcateSeq = pcateSeq;
 	}
 
@@ -63,14 +71,6 @@ public class Category extends AbstractPageDomain {
 
 	public void setUseYn(String useYn) {
 		this.useYn = useYn;
-	}
-
-	public int getLevel() {
-		return level;
-	}
-
-	public void setLevel(int level) {
-		this.level = level;
 	}
 
 }

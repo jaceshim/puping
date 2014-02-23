@@ -3,6 +3,7 @@ package randy.web.controller.rear;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -59,10 +60,14 @@ public class CategoryController extends AbstractRearController {
 	 * @return
 	 */
 	@RequestMapping(PATH + "tree")
-	@ResponseBody
-	public List<Category> getCategoryListForTree(@ModelAttribute Category category, Model model) {
+	public String getCategoryListForTree(HttpServletResponse response, @ModelAttribute Category category, Model model) {
 
-		return categoryService.getCategoryList(category);
+		response.setContentType(JSON_CONTENT_TYPE);
+
+		List<Category> dataList = categoryService.getCategoryList(category);
+		model.addAttribute("dataList", dataList);
+
+		return VIEW_PREFIX + PATH + "getCategoryListForTree";
 	}
 
 	/**
@@ -143,7 +148,7 @@ public class CategoryController extends AbstractRearController {
 
 		// 최상위 카테고리 호출.
 		Category categoryParam = new Category();
-		categoryParam.setPcateId(0);
+		categoryParam.setPcateSeq(0);
 		model.addAttribute("categoryList", categoryService.getCategoryList(categoryParam));
 
 		return VIEW_PREFIX + PATH + "insertCategoryTag";

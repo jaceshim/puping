@@ -25,6 +25,8 @@ public abstract class AbstractRearController extends AbstractController {
 	protected static final String VIEW_PREFIX = "/rear";
 
 	protected static final String MANAGER_SESS_KEY = ConfigUtils.getString("global.manager.session.key");
+	
+	protected static final String JSON_CONTENT_TYPE = "application/json";
 
 	/**
 	 * 로그인한 관리자 정보를 얻는다.

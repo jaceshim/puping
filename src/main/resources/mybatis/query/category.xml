@@ -14,28 +14,17 @@
 		,	use_yn    AS useYn
 	</sql>
 	
-	<select id="getCategoryTreeList" parameterType="category" resultType="category">
-		SELECT  hi.cate_seq AS cateSeq
-			,	cate_name  AS cateName
-			,	pcate_seq   AS pcateSeq
-			,	use_yn     AS useYn 
-			,	level
-		FROM    (
-		        SELECT  category_connect_by(cate_seq) AS cate_seq, @level AS level
-		        FROM    (
-		                SELECT  @start_with := 0,
-		                        @id := @start_with,
-		                        @level := 0
-		                ) vars, tb_category
-		        WHERE   @id IS NOT NULL
-		        ) ho
-		JOIN    tb_category hi
-		ON      hi.cate_seq = ho.cate_seq
-	</select>
+	<resultMap id="categoryResult" type="category">
+		<result column="cateSeq" property="cateSeq"/>
+		<result column="cateName" property="cateName"/>
+		<result column="pcateSeq" property="pcateSeq"/>
+		<result column="useYn" property="useYn"/>
+		<association property="childrenList" column="{pcateSeq=cateSeq}" select="randy.sql.category.getCategoryList" />
+	</resultMap>	
 	
 	<select id="getCategoryList" parameterType="category" resultType="category">
 		select <include refid="selectCategorySql"/>
-		from tb_category
+		from tb_category TB
 		<where>
 			<if test='pcateSeq != null'>
 				pcate_seq = #{pcateSeq}
