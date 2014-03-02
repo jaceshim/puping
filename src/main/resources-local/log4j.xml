@@ -41,6 +41,11 @@
 		<appender-ref ref="console" />
 	</logger>
 	
+	<logger name="org.apache.velocity" additivity="false">
+		<level value="debug" />
+		<appender-ref ref="console" />
+	</logger>	
+	
 	<!-- for mybatis sql logging (is same mapper default namespace) -->
 	<logger name="randy.sql" additivity="false">
 		<level value="debug" />

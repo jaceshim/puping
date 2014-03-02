@@ -1,0 +1,49 @@
+<head>
+	<script type="text/javascript">
+		function insertCategory() {
+			var form = document.insertForm;
+			if (form.cateName.value == '') {
+				alert('카테고리명을 입력해 주십시오.');
+				form.cateName.focus();
+				return;
+			}
+			
+			form.action = '/rear/category/insert';
+			form.submit();
+		}
+	</script>
+</head>
+<body>
+
+	<form id="insertForm" name="insertForm" class="form-horizontal" method="post">
+		<input type="hidden" name="pcateSeq" id="pcateSeq" value="$!params.pcateSeq" >
+		<div class="control-group">
+			<label class="control-label" for="form-field-1">상위카테고리</label>
+			<div class="controls">
+				#if ($params.pcateSeq == "0")
+				ROOT
+				#else
+				$!data.cateName
+				#end
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="form-field-1">카테고리명</label>
+			<div class="controls">
+				<input type="text" id="cateName" name="cateName">
+			</div>
+		</div>
+		<div class="form-actions">
+			<button class="btn btn-info" type="button" onclick="insertCategory(); return false;">
+				<i class="icon-ok bigger-110"></i>
+				등록
+			</button>
+			&nbsp; &nbsp; &nbsp;
+			<button class="btn" type="reset">
+				<i class="icon-undo bigger-110"></i>
+				Reset
+			</button>
+		</div>					
+	</form>
+
+</body>

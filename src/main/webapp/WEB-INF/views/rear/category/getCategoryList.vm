@@ -4,17 +4,54 @@
 	<script src="/assets/js/jstree/jstree.min.js"></script>
 	<script type="text/javascript">
 		var URI_PREFIX = '/rear/category/';
+		var DETAIL_CONTENT_AREA = 'dev-detail-content';
 		
 		function jsInsert(obj) {
-			alert(obj.cateSeq);
+			var titleText = obj.text + ' 하위 카테고리 등록';
+			detailTitleHandler(titleText);
+			
+			jQuery.ajax({
+				url: URI_PREFIX + 'insertform.ajax',
+				data: {pcateSeq: obj.id},
+				success: function(result) {
+					detailContentHandler(result);
+				}
+			});
 		}
 		
 		function jsUpdate(obj) {
-		
+			var titleText = obj.text + ' - 수정 ';
+			detailTitleHandler(titleText);
+			
+			jQuery.ajax({
+				url: URI_PREFIX + 'updateform.ajax',
+				data: {cateSeq: obj.id},
+				success: function(result) {
+					detailContentHandler(result);
+				}
+			});
+					
 		}
 		
 		function jsView(obj) {
+			var titleText = obj.text + ' - 상세정보';
+			detailTitleHandler(titleText);
+			
+			jQuery.ajax({
+				url: URI_PREFIX + 'view.ajax',
+				data: {cateSeq: obj.id},
+				success: function(result) {
+					detailContentHandler(result);
+				}
+			});			
+		}
 		
+		function detailTitleHandler(txt) {
+			$('#dev-detail-title').text(txt);
+		}
+		
+		function detailContentHandler(html) {
+			$('#dev-detail-content').html(html);
 		}
 		
 		$(function () {
@@ -25,7 +62,7 @@
 					'themes' : { 'stripes' : true },
 					'data' : {
 						'url' : function (node) {
-							return '/rear/category/tree.json';
+							return URI_PREFIX + 'tree.json';
 						},
 						'data' : function (node) {
 							var tempNodeId = node.cateSeq === '#' ? '0' : node.cateSeq;
@@ -57,20 +94,21 @@
 						return {
 							'insert': {
 								'label' : '등록',
-								'action' : function(obj) {
-									jsInsert(obj);
+								'action' : function() {
+									console.log($node);
+									jsInsert($node);
 								}
 							},
 							'update': {
 								'label' : '수정',
-								'action' : function(obj) {
-									jsUpdate(obj);
+								'action' : function() {
+									jsUpdate($node);
 								}
 							},
 							'view' : {
 								'label' : '상세조회',
-								'action' : function(obj) {
-									jsView(obj);
+								'action' : function() {
+									jsView($node);
 								}
 							}
 						}
@@ -106,7 +144,7 @@
 			<div class="widget-body">
 				<div class="widget-main padding-8">
 					<div id="dev-detail-content">
-					
+						&nbsp;
 					</div>
 				</div>
 			</div>

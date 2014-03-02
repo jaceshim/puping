@@ -93,9 +93,16 @@ public class CategoryController extends AbstractRearController {
 	 * @return
 	 */
 	@RequestMapping(PATH + "insertform")
-	public String insertCategoryFormForAjax(Model model) {
+	public String insertCategoryFormForAjax(@ModelAttribute Category category, Model model) {
 
-		return VIEW_PREFIX + PATH + "/insertCategoryForm";
+		Category param = new Category();
+		param.setCateSeq(category.getPcateSeq());
+
+		// 상위 카테고리 정보 호출.
+		Category data = categoryService.getCategory(param);
+		model.addAttribute("data", data);
+
+		return VIEW_PREFIX + PATH + "insertCategoryForm";
 	}
 
 	/**

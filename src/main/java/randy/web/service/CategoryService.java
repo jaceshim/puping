@@ -48,6 +48,16 @@ public class CategoryService extends AbstractService {
 		}
 		return commonDao.selectList(NAMESPACE + "getCategoryList", category);
 	}
+	
+	/**
+	 * 카테고리 상세정보 조회
+	 * 
+	 * @param category
+	 * @return
+	 */
+	public Category getCategory(Category category) {
+		return commonDao.selectOne(NAMESPACE + "getCategory", category);
+	}
 
 	/**
 	 * 신규 카테고리 등록

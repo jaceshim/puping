@@ -1,14 +1,14 @@
 [
 #if (!$params.pcateSeq || $params.pcateSeq == 0)
-	{"id" : 0, "cateSeq": 0, "pcateSeq": -1, "text": "ROOT", "type" : "root",
+	{"id" : "0", "cateSeq": "0", "pcateSeq": "-1", "text": "ROOT", "type" : "root",
 		"children": [
 			#foreach ($item in $dataList)
-				{"id": $item.cateSeq, "cateSeq": $item.cateSeq, "pcateSeq": $item.pcateSeq, "text": "$item.cateName", "children": #if ($item.isChildrens) true #else false #end }
+				{"id": "$item.cateSeq", "cateSeq": "$item.cateSeq", "pcateSeq": "$item.pcateSeq", "text": "$item.cateName", "children": #if ($item.isChildrens) true #else false #end }
 			#end
 		]}
 #else
 	#foreach ($item in $dataList)
-		{"id": $item.cateSeq, "cateSeq": $item.cateSeq, "pcateSeq": $item.pcateSeq, "text": "$item.cateName", "children": #if ($item.isChildrens) true #else false #end }
+		{"id": "$item.cateSeq", "cateSeq": "$item.cateSeq", "pcateSeq": "$item.pcateSeq", "text": "$item.cateName", "children": #if ($item.isChildrens) true #else false #end }
 	#end
 #end
 ]

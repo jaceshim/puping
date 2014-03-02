@@ -4,8 +4,7 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- namespace는 반드시 data-context.xml의 commonDao Bean설정시 주어진 defaultNamespace를 prefix로 해야함. -->
 <mapper namespace="randy.sql.category">
-	<cache  eviction="LRU" 
-			flushInterval="60000"/>
+	<cache  eviction="LRU" flushInterval="60000"/>
 
 	<sql id="selectCategorySql">
 			cate_seq   AS cateSeq
@@ -22,12 +21,22 @@
 		<association property="childrenList" column="{pcateSeq=cateSeq}" select="randy.sql.category.getCategoryList" />
 	</resultMap>	
 	
-	<select id="getCategoryList" parameterType="category" resultType="category">
+	<select id="getCategoryList" resultMap="categoryResult" parameterType="category">
 		select <include refid="selectCategorySql"/>
 		from tb_category TB
 		<where>
 			<if test='pcateSeq != null'>
 				pcate_seq = #{pcateSeq}
+			</if>
+		</where>
+	</select>
+	
+	<select id="getCategory" resultMap="categoryResult" parameterType="category">
+		select <include refid="selectCategorySql"/>
+		from tb_category TB
+		<where>
+			<if test='cateSeq != null'>
+				cate_seq = #{cateSeq}
 			</if>
 		</where>
 	</select>

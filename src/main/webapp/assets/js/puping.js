@@ -119,7 +119,5 @@ var Puping = Puping || (function(){
 })();
 
 $(function() {
-	$(function() {
-		// init function
-	});	
+	
 });
