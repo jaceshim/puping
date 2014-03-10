@@ -15,31 +15,30 @@
 </head>
 <body>
 
-	<form id="insertForm" name="insertForm" class="form-horizontal" method="post">
-		<input type="hidden" name="pcateSeq" id="pcateSeq" value="$!params.pcateSeq" >
-		<div class="control-group">
-			<label class="control-label" for="form-field-1">상위카테고리</label>
-			<div class="controls">
-				#if ($params.pcateSeq == "0")
-				ROOT
-				#else
-				$!data.cateName
-				#end
-			</div>
+<form id="insertForm" name="insertForm" method="post" class="form-horizontal row-border" >
+	<input type="hidden" name="pcateSeq" id="pcateSeq" value="$!params.pcateSeq" >
+	<div class="form-group">
+		<label class="col-md-2 control-label">상위카테고리</label>
+		<div class="col-md-10">
+			#if ($params.pcateSeq == "0")
+			ROOT
+			#else
+			$!data.cateName
+			#end
 		</div>
-		<div class="control-group">
-			<label class="control-label" for="form-field-1">카테고리명</label>
-			<div class="controls">
-				<input type="text" id="cateName" name="cateName">
-				
-			</div>
-			
-		</div>
-		<div class="form-actions">
-			<button class="btn btn-sm btn-primary">등록</button>
-			&nbsp; &nbsp; &nbsp;
-			<button class="btn btn-sm btn-gray" type="reset" >Reset</button>
-		</div>					
-	</form>
-<p><button class="btn btn-sm btn-primary">Small</button></p>
+	</div>
+
+	<div class="form-group">
+		<label class="col-md-2 control-label">
+			카테고리명
+			<span class="required">*</span>
+		</label>
+		<div class="col-md-10"><input type="text" id="cateName" name="cateName" class="form-control"></div>
+	</div>
+	
+	<div class="form-actions">
+		<button class="btn btn-sm btn-primary pull-right">등록</button>
+	</div>	
+</form>
+
 </body>
