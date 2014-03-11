@@ -5,7 +5,7 @@
 			if (form.cateName.value == '') {
 				alert('카테고리명을 입력해 주십시오.');
 				form.cateName.focus();
-				return;
+				return false;
 			}
 			
 			form.action = '/rear/category/insert';
@@ -15,9 +15,9 @@
 </head>
 <body>
 
-<form id="insertForm" name="insertForm" method="post" class="form-horizontal row-border" >
-	<input type="hidden" name="pcateSeq" id="pcateSeq" value="$!params.pcateSeq" >
+<form id="insertForm" name="insertForm" method="post" class="form-horizontal row-border" onsubmit="return insertCategory();">
 	<div class="form-group">
+		<input type="hidden" name="pcateSeq" id="pcateSeq" value="$!params.pcateSeq" >
 		<label class="col-md-2 control-label">상위카테고리</label>
 		<div class="col-md-10">
 			#if ($params.pcateSeq == "0")
@@ -37,7 +37,7 @@
 	</div>
 	
 	<div class="form-actions">
-		<button class="btn btn-sm btn-primary pull-right">등록</button>
+		<button type="submit" class="btn btn-sm btn-primary pull-right">등록</button>
 	</div>	
 </form>
 
