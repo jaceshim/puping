@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="decorator" uri="http://www.opensymphony.com/sitemesh/decorator" %>
 <%@ taglib prefix="page" uri="http://www.opensymphony.com/sitemesh/page" %>
 
@@ -8,106 +7,114 @@
 
 <!DOCTYPE html>
 <html lang="ko">
-	<head>
-		<meta charset="utf-8" />
-		<title>Puping Admin ::: <decorator:title /></title>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+	<title>Puping Admin ::: <decorator:title /></title>
 
-		<meta name="description" content="overview &amp; stats" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		
-		<!--inline styles related to this page-->
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />		
+	<!--=== CSS ===-->
 
-		<!--basic styles-->
+	<!-- Bootstrap -->
+	<link href="/static/melon/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
 
-		<link href="/assets/css/bootstrap.min.css" rel="stylesheet" />
-		<link href="/assets/css/bootstrap-responsive.min.css" rel="stylesheet" />
-		<link href="/assets/css/font-awesome.min.css" rel="stylesheet" />
+	<!-- jQuery UI -->
+	<!--<link href="/static/melon/plugins/jquery-ui/jquery-ui-1.10.2.custom.css" rel="stylesheet" type="text/css" />-->
+	<!--[if lt IE 9]>
+		<link rel="stylesheet" type="text/css" href="/static/melon/plugins/jquery-ui/jquery.ui.1.10.2.ie.css"/>
+	<![endif]-->
 
-		<!--[if IE 7]>
-		  <link rel="stylesheet" href="/assets/css/font-awesome-ie7.min.css" />
-		<![endif]-->
+	<!-- Theme -->
+	<link href="/static/melon/assets/css/main.css" rel="stylesheet" type="text/css" />
+	<link href="/static/melon/assets/css/plugins.css" rel="stylesheet" type="text/css" />
+	<link href="/static/melon/assets/css/responsive.css" rel="stylesheet" type="text/css" />
+	<link href="/static/melon/assets/css/icons.css" rel="stylesheet" type="text/css" />
 
-		<!--page specific plugin styles-->
+	<link rel="stylesheet" href="/static/melon/assets/css/fontawesome/font-awesome.min.css">
+	<!--[if IE 7]>
+		<link rel="stylesheet" href="/static/melon/assets/css/fontawesome/font-awesome-ie7.min.css">
+	<![endif]-->
 
-		<!--fonts-->
+	<!--[if IE 8]>
+		<link href="/static/melon/assets/css/ie8.css" rel="stylesheet" type="text/css" />
+	<![endif]-->
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
 
-		<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300" />
+	<link href="/static/melon/assets/css/puping.css" rel="stylesheet" type="text/css" />
 
-		<!--ace styles-->
+	<!--=== JavaScript ===-->
 
-		<link rel="stylesheet" href="/assets/css/ace.min.css" />
-		<link rel="stylesheet" href="/assets/css/ace-responsive.min.css" />
-		<link rel="stylesheet" href="/assets/css/ace-skins.min.css" />
+	<script type="text/javascript" src="/static/melon/assets/js/libs/jquery-1.10.2.min.js"></script>
+	<script type="text/javascript" src="/static/melon/plugins/jquery-ui/jquery-ui-1.10.2.custom.min.js"></script>
 
-		<!--[if lte IE 8]>
-		  <link rel="stylesheet" href="/assets/css/ace-ie.min.css" />
-		<![endif]-->
-		
-		<!--basic scripts-->
+	<script type="text/javascript" src="/static/melon/bootstrap/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="/static/melon/assets/js/libs/lodash.compat.min.js"></script>
 
-		<!--[if !IE]>-->
+	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+	<!--[if lt IE 9]>
+		<script src="/static/melon/assets/js/libs/html5shiv.js"></script>
+	<![endif]-->
 
-		<script src="/assets/js/jquery-2.0.3.min.js"></script>
+	<!-- Smartphone Touch Events -->
+	<script type="text/javascript" src="/static/melon/plugins/touchpunch/jquery.ui.touch-punch.min.js"></script>
+	<script type="text/javascript" src="/static/melon/plugins/event.swipe/jquery.event.move.js"></script>
+	<script type="text/javascript" src="/static/melon/plugins/event.swipe/jquery.event.swipe.js"></script>
 
-		<!--<![endif]-->
+	<!-- General -->
+	<script type="text/javascript" src="/static/melon/assets/js/libs/breakpoints.js"></script>
+	<script type="text/javascript" src="/static/melon/plugins/respond/respond.min.js"></script> <!-- Polyfill for min/max-width CSS3 Media Queries (only for IE8) -->
+	<script type="text/javascript" src="/static/melon/plugins/cookie/jquery.cookie.min.js"></script>
+	<script type="text/javascript" src="/static/melon/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script type="text/javascript" src="/static/melon/plugins/slimscroll/jquery.slimscroll.horizontal.min.js"></script>
 
-		<!--[if IE]>
-		<script src="/assets/js/jquery-1.10.2.min.js"></script>
-		<![endif]-->
+	<!-- Page specific plugins -->
+	<!-- Charts -->
+	<!--[if lt IE 9]>
+		<script type="text/javascript" src="/static/melon/plugins/flot/excanvas.min.js"></script>
+	<![endif]-->
+	<script type="text/javascript" src="/static/melon/plugins/sparkline/jquery.sparkline.min.js"></script>
+	<script type="text/javascript" src="/static/melon/plugins/flot/jquery.flot.min.js"></script>
+	<script type="text/javascript" src="/static/melon/plugins/flot/jquery.flot.tooltip.min.js"></script>
+	<script type="text/javascript" src="/static/melon/plugins/flot/jquery.flot.resize.min.js"></script>
+	<script type="text/javascript" src="/static/melon/plugins/flot/jquery.flot.time.min.js"></script>
+	<script type="text/javascript" src="/static/melon/plugins/flot/jquery.flot.growraf.min.js"></script>
+	<script type="text/javascript" src="/static/melon/plugins/easy-pie-chart/jquery.easy-pie-chart.min.js"></script>
 
-		<!--[if !IE]>-->
+	<script type="text/javascript" src="/static/melon/plugins/daterangepicker/moment.min.js"></script>
+	<script type="text/javascript" src="/static/melon/plugins/daterangepicker/daterangepicker.js"></script>
+	<script type="text/javascript" src="/static/melon/plugins/blockui/jquery.blockUI.min.js"></script>
 
-		<script type="text/javascript">
-			window.jQuery || document.write("<script src='/assets/js/jquery-2.0.3.min.js'>"+"<"+"/script>");
-		</script>
+	<script type="text/javascript" src="/static/melon/plugins/fullcalendar/fullcalendar.min.js"></script>
 
-		<!--<![endif]-->
+	<!-- Noty -->
+	<script type="text/javascript" src="/static/melon/plugins/noty/jquery.noty.js"></script>
+	<script type="text/javascript" src="/static/melon/plugins/noty/layouts/top.js"></script>
+	<script type="text/javascript" src="/static/melon/plugins/noty/themes/default.js"></script>
 
-		<!--[if IE]>
-		<script type="text/javascript">
-		 window.jQuery || document.write("<script src='assets/js/jquery-1.10.2.min.js'>"+"<"+"/script>");
-		</script>
-		<![endif]-->
+	<!-- Forms -->
+	<script type="text/javascript" src="/static/melon/plugins/uniform/jquery.uniform.min.js"></script>
+	<script type="text/javascript" src="/static/melon/plugins/select2/select2.min.js"></script>
 
-		<script type="text/javascript">
-			if("ontouchend" in document) document.write("<script src='/assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
-		</script>
-		<script src="/assets/js/bootstrap.min.js"></script>
+	<!-- App -->
+	<script type="text/javascript" src="/static/melon/assets/js/app.js"></script>
+	<script type="text/javascript" src="/static/melon/assets/js/plugins.js"></script>
+	<script type="text/javascript" src="/static/melon/assets/js/plugins.form-components.js"></script>
 
-		<!--page specific plugin scripts-->
-
-		<!--[if lte IE 8]>
-		  <script src="/assets/js/excanvas.min.js"></script>
-		<![endif]-->
-
-		<script src="/assets/js/jquery-ui-1.10.3.custom.min.js"></script>
-		<script src="/assets/js/jquery.ui.touch-punch.min.js"></script>
-		<script src="/assets/js/jquery.slimscroll.min.js"></script>
-		<script src="/assets/js/jquery.easy-pie-chart.min.js"></script>
-		<script src="/assets/js/jquery.sparkline.min.js"></script>
-		<script src="/assets/js/jquery.validate.min.js"></script>
-		<script src="/assets/js/flot/jquery.flot.min.js"></script>
-		<script src="/assets/js/flot/jquery.flot.pie.min.js"></script>
-		<script src="/assets/js/flot/jquery.flot.resize.min.js"></script>
-		
-
-		<!--ace scripts-->
-		<script src="/assets/js/ace-elements.min.js"></script>
-		<script src="/assets/js/ace.min.js"></script>
-		<script src="/assets/js/puping.js"></script>
-		
-		<decorator:head />
-	</head>
+	<script>
+	$(document).ready(function(){
+		"use strict";
+		App.init(); // Init layout and core plugins
+	});
+	</script>
 	
-	<c:set var="uri" value="${pageContext.request.requestURI}" />
-	
-	<c:set var="bodyClass" value="" />
-	<c:if test='${fn:indexOf(uri, "/loginform") != -1}'>
-		<c:set var="bodyClass" value="login-layout" />		
-	</c:if>
-	
-	<body class="<c:out value="${bodyClass}" />">
-		<decorator:body />
-	</body>
+	<decorator:head />
+</head>
+
+<body>
+
+	<!-- /Content -->
+	<decorator:body />
+	<!-- /Content -->
+
+</body>
 </html>
+<!-- Localized -->

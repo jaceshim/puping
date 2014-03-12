@@ -1,12 +1,12 @@
 <tools>
 	<toolbox scope="application">
-		<tool key="alterTool" class="org.apache.velocity.tools.generic.AlternatorTool"/>
-		<tool key="convertTool" class="org.apache.velocity.tools.generic.ConversionTool" dateFormat="yyyy-MM-dd" />
-		<tool key="displayTool" class="org.apache.velocity.tools.generic.DisplayTool"/>
-		<tool key="mathTool" class="org.apache.velocity.tools.generic.MathTool"/>
-		<tool key="numberTool" class="org.apache.velocity.tools.generic.NumberTool"/>
-		<tool key="listTool" class="org.apache.velocity.tools.generic.ListTool"/>
-		<tool key="escTool" class="org.apache.velocity.tools.generic.EscapeTool"/>
+		<tool key="alter" class="org.apache.velocity.tools.generic.AlternatorTool"/>
+		<tool key="convert" class="org.apache.velocity.tools.generic.ConversionTool" dateFormat="yyyy-MM-dd" />
+		<tool key="display" class="org.apache.velocity.tools.generic.DisplayTool"/>
+		<tool key="math" class="org.apache.velocity.tools.generic.MathTool"/>
+		<tool key="number" class="org.apache.velocity.tools.generic.NumberTool"/>
+		<tool key="list" class="org.apache.velocity.tools.generic.ListTool"/>
+		<tool key="esc" class="org.apache.velocity.tools.generic.EscapeTool"/>
 	</toolbox>
 	<toolbox scope="request">
 		<tool key="params" class="org.apache.velocity.tools.view.ParameterTool"/>

@@ -2,6 +2,7 @@
 	<title>카테고리 목록</title>
 	<link rel="stylesheet" href="/static/melon/plugins/jstree/themes/default/style.min.css" />
 	<script src="/static/melon/plugins/jstree/jstree.min.js"></script>
+
 	<script type="text/javascript">
 		var URI_PREFIX = '/rear/category/';
 		var DETAIL_CONTENT_AREA = 'dev-detail-content';
@@ -57,6 +58,8 @@
 		$(function () {
 			$('#dev-cate-tree').jstree({
 				'core' : {
+					'open_parents' : true,
+					'load_open' : true,				
 					'animation' : 0,
 					'check_callback' : true,
 					'themes' : { 'stripes' : true },
@@ -114,7 +117,7 @@
 						}
 					}
 				}
-			});		
+			});
 		});
 	</script>
 </head>
