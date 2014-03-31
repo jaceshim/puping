@@ -25,6 +25,16 @@ public class Category extends AbstractPageDomain {
 	/** 사용여부 */
 	private String useYn;
 	
+	private boolean childrens;
+	
+	public boolean isChildrens() {
+		return ( this.childrenList == null || this.childrenList.size() == 0 ) ? false : true;
+	}
+
+	public void setChildrens(boolean childrens) {
+		this.childrens = childrens;
+	}
+
 	public List<CategoryTag> getCateTagList() {
 		return cateTagList;
 	}

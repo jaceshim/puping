@@ -41,6 +41,8 @@ public abstract class AbstractController {
 		String[] messageArgs = alertInfo.getMessageArgs();
 		String message = MessageUtils.getMessage(messageKey, messageArgs);
 		
+		logger.debug("--> message : " + message );
+		
 		// 해당 message key에 대한 값이 없는 경우 넘어온 message를 그냥 출력.
 		if (message == null || message.length() == 0) {
 			message = messageKey;

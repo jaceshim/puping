@@ -1,14 +1,23 @@
+#set ($isLast = false)
 [
 #if (!$params.pcateSeq || $params.pcateSeq == 0)
 	{"id" : "0", "cateSeq": "0", "pcateSeq": "-1", "text": "ROOT", "type" : "root",
 		"children": [
 			#foreach ($item in $dataList)
-				{"id": "$item.cateSeq", "cateSeq": "$item.cateSeq", "pcateSeq": "$item.pcateSeq", "text": "$item.cateName", "children": #if ($item.isChildrens) true #else false #end }
+				#if ( $velocityCount == $dataList.size() )
+					#set ($isLast = true)
+				#end
+				{"id": "$item.cateSeq", "cateSeq": "$item.cateSeq", "pcateSeq": "$item.pcateSeq", "text": "$item.cateName", "children": $item.childrens }
+				#if (! $isLast) , #end
 			#end
 		]}
 #else
 	#foreach ($item in $dataList)
-		{"id": "$item.cateSeq", "cateSeq": "$item.cateSeq", "pcateSeq": "$item.pcateSeq", "text": "$item.cateName", "children": #if ($item.isChildrens) true #else false #end }
+		#if ( $velocityCount == $dataList.size() )
+			#set ($isLast = true)
+		#end	
+		{"id": "$item.cateSeq", "cateSeq": "$item.cateSeq", "pcateSeq": "$item.pcateSeq", "text": "$item.cateName", "children": $item.childrens }
+		#if (! $isLast) , #end
 	#end
 #end
 ]

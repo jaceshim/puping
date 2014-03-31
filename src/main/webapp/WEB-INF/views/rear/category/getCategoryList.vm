@@ -57,18 +57,15 @@
 		
 		$(function () {
 			$('#dev-cate-tree').jstree({
-				'core' : {
-					'open_parents' : true,
-					'load_open' : true,				
-					'animation' : 0,
-					'check_callback' : true,
+				'core' : {		
+					'animation' : 0,	
 					'themes' : { 'stripes' : true },
 					'data' : {
 						'url' : function (node) {
 							return URI_PREFIX + 'tree.json';
 						},
 						'data' : function (node) {
-							var tempNodeId = node.cateSeq === '#' ? '0' : node.cateSeq;
+							var tempNodeId = node.id === '#' ? '0' : node.id;
 							return { 'pcateSeq' : tempNodeId};
 						}
 					}
@@ -91,7 +88,7 @@
 						'valid_children' : []
 					}
 				},				
-				'plugins' : ['contextmenu', 'state', 'types', 'wholerow'],
+				'plugins' : ['contextmenu', 'json_data', 'state', 'types', 'wholerow'],
 				'contextmenu' : {
 					'items': function($node) {
 						return {

@@ -48,7 +48,7 @@ public class CategoryService extends AbstractService {
 		}
 		return commonDao.selectList(NAMESPACE + "getCategoryList", category);
 	}
-	
+
 	/**
 	 * 카테고리 상세정보 조회
 	 * 

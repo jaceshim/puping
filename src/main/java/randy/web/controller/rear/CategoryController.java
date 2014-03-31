@@ -64,6 +64,12 @@ public class CategoryController extends AbstractRearController {
 
 		response.setContentType(JSON_CONTENT_TYPE);
 
+		if (category.getPcateSeq() == null) {
+			category.setPcateSeq(0);
+		}
+
+		logger.debug("--> 상위카테고리 : " + category.getPcateSeq());
+
 		List<Category> dataList = categoryService.getCategoryList(category);
 		model.addAttribute("dataList", dataList);
 

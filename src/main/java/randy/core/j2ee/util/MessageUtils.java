@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
  * @author jace
  */
 @Component
-public final class MessageUtils {
+public class MessageUtils {
 
 	static Logger logger = LoggerFactory.getLogger(MessageUtils.class);
 
